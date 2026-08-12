@@ -26,17 +26,21 @@ if not st.session_state["authenticated"]:
 
 players_data = db.get_all_players()
 players_dict = {p["name"]: p["elo"] for p in players_data}
-available_players = list(players_dict.keys())
+available_players = sorted(players_dict.keys())  # Ordre alphabétique
 
 st.sidebar.title("🎮 Menu")
 menu = st.sidebar.radio("Navigation", ["📊 Classement", "🏎️ Mario Kart 8", "⚽ FC 26", "⚙️ Gestion Profils", "📜 Historique"])
 
 # --- FONCTIONS VISUELLES ---
+# Icône de secours (toujours disponible) affichée si l'image d'origine ne charge pas
+FALLBACK_ICON = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+_ONERROR = f"this.onerror=null;this.src='{FALLBACK_ICON}';"
+
 def display_mk8_track(track_name):
     t = MK8_TRACKS[track_name]
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:15px; background-color:#1e1e2e; padding:10px; border-radius:10px; margin-bottom:10px;">
-            <img src="{t['image']}" width="80" style="border-radius:5px;">
+            <img src="{t['image']}" width="80" style="border-radius:5px;" onerror="{_ONERROR}">
             <div>
                 <strong style="font-size:1.1em;">{track_name}</strong><br>
                 <span>Difficulté : {'🌶️' * t['difficulty']}</span>
@@ -48,18 +52,18 @@ def display_mk8_character(char_name, player_name):
     c = MK8_CHARACTERS[char_name]
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:10px; padding:5px;">
-            <img src="{c['image']}" width="40" style="border-radius:50px;">
+            <img src="{c['image']}" width="40" style="border-radius:50px;" onerror="{_ONERROR}">
             <span><b>{player_name}</b> joue <i>{char_name}</i></span>
         </div>
     """, unsafe_allow_html=True)
 
-def display_fc_team(team_name, all_teams_dict):
-    data = all_teams_dict.get(team_name, {"stars": 1.0, "logo": DEFAULT_LOGO})
+def display_fc_team(league_name, team_name, all_teams_dict):
+    data = all_teams_dict.get(league_name, {}).get(team_name, {"stars": 1.0, "logo": DEFAULT_LOGO})
     stars = data["stars"]
     star_str = '⭐' * int(stars) + ('✨' if stars % 1 != 0 else '')
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:15px; background-color:#173620; padding:10px; border-radius:10px; margin-bottom:15px; border: 1px solid #2d663b;">
-            <img src="{data['logo']}" width="50">
+            <img src="{data['logo']}" width="50" onerror="{_ONERROR}">
             <div>
                 <strong style="font-size:1.2em;">{team_name}</strong><br>
                 <span>Niveau : {star_str} ({stars})</span>
@@ -129,11 +133,11 @@ elif menu == "🏎️ Mario Kart 8":
         cols_char = st.columns(len(selected_players))
         for idx, p in enumerate(selected_players):
             with cols_char[idx]:
-                chars[p] = st.selectbox(f"Personnage pour {p}", list(MK8_CHARACTERS.keys()), key=f"char_{p}")
+                chars[p] = st.selectbox(f"Personnage pour {p}", sorted(MK8_CHARACTERS.keys()), key=f"char_{p}")
                 display_mk8_character(chars[p], p)
                 
         st.markdown("---")
-        tracks_played = st.multiselect("Circuits joués :", list(MK8_TRACKS.keys()))
+        tracks_played = st.multiselect("Circuits joués :", sorted(MK8_TRACKS.keys()))
         
         if tracks_played:
             st.write("**Aperçu des circuits sélectionnés :**")
@@ -147,10 +151,16 @@ elif menu == "🏎️ Mario Kart 8":
         cols_rank = st.columns(len(selected_players))
         for idx, p in enumerate(selected_players):
             with cols_rank[idx]:
-                pos = st.number_input(f"Place de {p}", min_value=1, max_value=12, value=idx+1)
+                pos = st.number_input(f"Place de {p}", min_value=1, max_value=12, value=idx+1, key=f"pos_{p}")
                 rankings_with_pos.append((p, pos))
 
-        if st.button("💾 Enregistrer la session MK8"):
+        # Deux joueurs ne peuvent pas finir à la même place
+        positions_used = [pos for _, pos in rankings_with_pos]
+        has_duplicate_positions = len(positions_used) != len(set(positions_used))
+        if has_duplicate_positions:
+            st.error("🚫 Deux joueurs ne peuvent pas terminer à la même place ! Merci d'attribuer une place unique à chaque joueur.")
+
+        if st.button("💾 Enregistrer la session MK8", disabled=has_duplicate_positions):
             if not tracks_played:
                 st.error("Sélectionnez au moins un circuit.")
             else:
@@ -183,31 +193,34 @@ elif menu == "⚽ FC 26":
                 st.rerun()
 
     all_teams = db.get_fc26_teams()
-    format_match = st.selectbox("Format :", ["1v1", "2v1", "2v2"])
+    leagues_sorted = sorted(all_teams.keys())
+    format_match = st.selectbox("Format :", sorted(["1v1", "2v1", "2v2"]))
     
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("### Équipe Domicile")
         t1_p = st.multiselect("Joueurs (Dom)", available_players, max_selections=2 if "2" in format_match else 1, key="t1p")
-        t1_team = st.selectbox("Sélectionner l'équipe (Dom) :", list(all_teams.keys()), key="t1_team")
-        display_fc_team(t1_team, all_teams)
+        t1_league = st.selectbox("Ligue (Dom) :", leagues_sorted, key="t1_league")
+        t1_team = st.selectbox("Équipe (Dom) :", sorted(all_teams[t1_league].keys()), key="t1_team")
+        display_fc_team(t1_league, t1_team, all_teams)
         score1 = st.number_input("Score Dom :", min_value=0, value=0)
 
     with col2:
         st.markdown("### Équipe Extérieur")
         p2_avail = [p for p in available_players if p not in t1_p]
         t2_p = st.multiselect("Joueurs (Ext)", p2_avail, max_selections=2 if "2v2" == format_match else 1, key="t2p")
-        t2_team = st.selectbox("Sélectionner l'équipe (Ext) :", list(all_teams.keys()), key="t2_team")
-        display_fc_team(t2_team, all_teams)
+        t2_league = st.selectbox("Ligue (Ext) :", leagues_sorted, key="t2_league")
+        t2_team = st.selectbox("Équipe (Ext) :", sorted(all_teams[t2_league].keys()), key="t2_team")
+        display_fc_team(t2_league, t2_team, all_teams)
         score2 = st.number_input("Score Ext :", min_value=0, value=0)
 
     if st.button("💾 Enregistrer le match FC26"):
         if not t1_p or not t2_p: st.error("Sélectionnez les joueurs.")
         else:
-            t1_data, t2_data = all_teams[t1_team], all_teams[t2_team]
+            t1_data, t2_data = all_teams[t1_league][t1_team], all_teams[t2_league][t2_team]
             elo_changes, is_off = elo.calculate_fc26_elo(t1_p, t2_p, t1_data["stars"], t2_data["stars"], score1, score2, players_dict)
             for p, delta in elo_changes.items(): db.update_player_elo(p, delta)
-            db.save_match("FC26", is_off, {"team1_players": t1_p, "team2_players": t2_p, "team1": t1_team, "team2": t2_team, "score1": score1, "score2": score2}, elo_changes)
+            db.save_match("FC26", is_off, {"team1_players": t1_p, "team2_players": t2_p, "team1": f"{t1_league} - {t1_team}", "team2": f"{t2_league} - {t2_team}", "score1": score1, "score2": score2}, elo_changes)
             st.success("Match enregistré !")
             st.rerun()
 
