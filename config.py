@@ -183,52 +183,121 @@ MK8_TRACKS = {
 }
 
 # ==========================================
-# FC 26 - ÉQUIPES MAJEURES
-# (Premier League, La Liga, Ligue 1, Serie A, Bundesliga, Nations)
+# FC 26 - ÉQUIPES
+# Structure : { "Ligue": { "Équipe": {"stars": x, "logo": url} } }
+# Ce format permet le double menu déroulant "Ligue" -> "Équipe".
+# NOTE : la base de données réelle du jeu FC 26 contient plusieurs
+# centaines de clubs sous licence. Il n'est pas réaliste de tous les
+# lister ici de façon fiable, donc cette liste couvre un très large
+# éventail de championnats + les équipes nationales. Tu peux en ajouter
+# d'autres à tout moment via "Créer une équipe personnalisée" dans l'appli.
 # ==========================================
 FC26_TEAMS = {
-    # Premier League
-    "Manchester City": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"},
-    "Arsenal": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg"},
-    "Liverpool": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg"},
-    "Manchester United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"},
-    "Chelsea": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg"},
-    "Tottenham Hotspur": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"},
-    "Newcastle United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg"},
-    "Aston Villa": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/Aston_Villa_FC_crest_%282016%29.svg"},
-    # La Liga
-    "Real Madrid": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"},
-    "FC Barcelone": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"},
-    "Atlético Madrid": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg"},
-    "Girona FC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/9/90/Girona_FC_logo.svg"},
-    "Real Sociedad": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg"},
-    # Ligue 1
-    "Paris Saint-Germain": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"},
-    "Olympique de Marseille": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg"},
-    "AS Monaco": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/b/ba/AS_Monaco_FC.svg"},
-    "Lille OSC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3f/Lille_OSC_2018_logo.svg"},
-    "Olympique Lyonnais": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/c6/Olympique_Lyonnais.svg"},
-    "RC Lens": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/RC_Lens_logo.svg"},
-    # Serie A
-    "Inter Milan": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg"},
-    "AC Milan": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg"},
-    "Juventus": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Juventus_FC_2017_icon_%28black%29.svg"},
-    "Napoli": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/2/28/S.S.C._Napoli_logo.svg"},
-    "AS Roma": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f7/AS_Roma_logo_%282017%29.svg"},
-    # Bundesliga
-    "Bayern Munich": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg"},
-    "Bayer Leverkusen": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg"},
-    "Borussia Dortmund": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg"},
-    "RB Leipzig": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg"},
-    # Équipes Nationales
-    "France": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/French_Football_Federation_logo.svg"},
-    "Angleterre": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/7/7b/England_national_football_team_crest.svg"},
-    "Brésil": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cb/Confedera%C3%A7%C3%A3o_Brasileira_de_Futebol_%28CBF%29_logo.svg"},
-    "Argentine": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/Argentine_Football_Association_logo.svg"},
-    "Espagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/31/Spain_National_Football_Team_badge.svg"},
-    "Allemagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/e/e3/DFB_Logo_1995.svg"},
-    "Portugal": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3d/Portuguese_Football_Federation.svg"},
-    "Italie": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/30/Italian_Football_Federation_logo.svg"},
-    "Belgique": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/4/43/Royal_Belgian_FA_logo_2019.svg"},
-    "Pays-Bas": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/78/Netherlands_national_football_team_logo.svg"},
+    "Premier League": {
+        "Arsenal": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg"},
+        "Aston Villa": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/Aston_Villa_FC_crest_%282016%29.svg"},
+        "Bournemouth": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Brentford": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Brighton": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Chelsea": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg"},
+        "Crystal Palace": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Everton": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Fulham": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Liverpool": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg"},
+        "Manchester City": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"},
+        "Manchester United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"},
+        "Newcastle United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg"},
+        "Nottingham Forest": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Tottenham Hotspur": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"},
+        "West Ham United": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Wolverhampton": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "La Liga": {
+        "Athletic Bilbao": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Atlético Madrid": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg"},
+        "FC Barcelone": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"},
+        "Girona FC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/9/90/Girona_FC_logo.svg"},
+        "Real Betis": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Real Madrid": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"},
+        "Real Sociedad": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg"},
+        "Sevilla FC": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Valence CF": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Villarreal CF": {"stars": 4.0, "logo": DEFAULT_LOGO},
+    },
+    "Ligue 1": {
+        "AS Monaco": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/b/ba/AS_Monaco_FC.svg"},
+        "FC Nantes": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "Lille OSC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3f/Lille_OSC_2018_logo.svg"},
+        "Olympique de Marseille": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg"},
+        "Olympique Lyonnais": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/c6/Olympique_Lyonnais.svg"},
+        "Paris Saint-Germain": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"},
+        "RC Lens": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/RC_Lens_logo.svg"},
+        "RC Strasbourg": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "Stade Rennais": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Toulouse FC": {"stars": 3.0, "logo": DEFAULT_LOGO},
+    },
+    "Serie A": {
+        "AC Milan": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg"},
+        "AS Roma": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f7/AS_Roma_logo_%282017%29.svg"},
+        "Atalanta": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Bologne": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Fiorentina": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Inter Milan": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg"},
+        "Juventus": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Juventus_FC_2017_icon_%28black%29.svg"},
+        "Lazio": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Napoli": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/2/28/S.S.C._Napoli_logo.svg"},
+        "Torino": {"stars": 3.0, "logo": DEFAULT_LOGO},
+    },
+    "Bundesliga": {
+        "Bayer Leverkusen": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg"},
+        "Bayern Munich": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg"},
+        "Borussia Dortmund": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg"},
+        "Eintracht Francfort": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "RB Leipzig": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg"},
+        "SC Fribourg": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "VfB Stuttgart": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "VfL Wolfsburg": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "Liga Portugal": {
+        "Benfica": {"stars": 4.5, "logo": DEFAULT_LOGO},
+        "FC Porto": {"stars": 4.5, "logo": DEFAULT_LOGO},
+        "Sporting CP": {"stars": 4.5, "logo": DEFAULT_LOGO},
+        "SC Braga": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "Eredivisie": {
+        "Ajax": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Feyenoord": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "PSV Eindhoven": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "AZ Alkmaar": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "Süper Lig": {
+        "Galatasaray": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Fenerbahçe": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Besiktas": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "Brasileirão": {
+        "Flamengo": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Palmeiras": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "São Paulo FC": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Corinthians": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "MLS": {
+        "Inter Miami": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "LA Galaxy": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "LAFC": {"stars": 3.5, "logo": DEFAULT_LOGO},
+    },
+    "Équipes Nationales": {
+        "Allemagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/e/e3/DFB_Logo_1995.svg"},
+        "Angleterre": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/7/7b/England_national_football_team_crest.svg"},
+        "Argentine": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/Argentine_Football_Association_logo.svg"},
+        "Belgique": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/4/43/Royal_Belgian_FA_logo_2019.svg"},
+        "Brésil": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cb/Confedera%C3%A7%C3%A3o_Brasileira_de_Futebol_%28CBF%29_logo.svg"},
+        "Croatie": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Espagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/31/Spain_National_Football_Team_badge.svg"},
+        "France": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/French_Football_Federation_logo.svg"},
+        "Italie": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/30/Italian_Football_Federation_logo.svg"},
+        "Maroc": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Pays-Bas": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/78/Netherlands_national_football_team_logo.svg"},
+        "Portugal": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3d/Portuguese_Football_Federation.svg"},
+    },
 }
