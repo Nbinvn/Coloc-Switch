@@ -68,17 +68,20 @@ def display_fc_team(team_name, all_teams_dict):
     """, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# 1. CLASSEMENT (Correction de l'erreur KeyError)
+# 1. CLASSEMENT
 # -----------------------------------------------------------------------------
 if menu == "📊 Classement":
     st.title("📊 Tableau de Bord")
     
     df = pd.DataFrame(players_data)
     if not df.empty:
-        # CORRECTION ICI : On utilise .get() pour éviter le KeyError si la DB a mal migré
-        df["avatar"] = df.get("avatar", "https://cdn-icons-png.flaticon.com/512/149/149071.png")
-        df["avatar"] = df["avatar"].fillna("https://cdn-icons-png.flaticon.com/512/149/149071.png")
+        # CORRECTION 1 : Vérification propre de l'existence de la colonne
+        if "avatar" not in df.columns:
+            df["avatar"] = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+        else:
+            df["avatar"] = df["avatar"].fillna("https://cdn-icons-png.flaticon.com/512/149/149071.png")
         
+        # Filtre et préparation des tableaux
         coloc_df = df[df["is_guest"] == 0][["avatar", "name", "elo"]].reset_index(drop=True)
         guest_df = df[df["is_guest"] == 1][["avatar", "name", "elo"]].reset_index(drop=True)
         
@@ -87,9 +90,10 @@ if menu == "📊 Classement":
             coloc_df,
             column_config={
                 "avatar": st.column_config.ImageColumn("Avatar", help="Photo"),
-                "name": "Joueur", "elo": "Score ELO"
+                "name": "Joueur", 
+                "elo": "Score ELO"
             },
-            use_container_width=True
+            width="stretch"  # <-- CORRECTION 2 : Remplace 'use_container_width=True'
         )
         
         st.subheader("🌟 Classement Invités")
@@ -97,9 +101,10 @@ if menu == "📊 Classement":
             guest_df,
             column_config={
                 "avatar": st.column_config.ImageColumn("Avatar", help="Photo"),
-                "name": "Invité", "elo": "Score ELO"
+                "name": "Invité", 
+                "elo": "Score ELO"
             },
-            use_container_width=True
+            width="stretch"  # <-- CORRECTION 2 : Remplace 'use_container_width=True'
         )
 
 # -----------------------------------------------------------------------------
