@@ -89,11 +89,16 @@ def update_player_elo(name: str, delta: float):
 CUSTOM_LEAGUE_NAME = "Équipes Personnalisées"
 
 def get_fc26_teams(gender: str = "Masculin") -> Dict[str, Dict[str, dict]]:
-    """Retourne les équipes FC26 groupées par ligue, filtrées par genre :
-    { "Nom de la ligue": { "Nom de l'équipe": {"stars": x, "logo": url} } }
-    """
+    """Retourne les équipes FC26 groupées par ligue, filtrées par genre de façon sécurisée."""
     base = FC26_TEAMS_MEN if gender == "Masculin" else FC26_TEAMS_WOMEN
-    teams = {league: dict(clubs) for league, clubs in base.items()}
+    
+    # S'assure de copier proprement la structure de base
+    teams = {}
+    if isinstance(base, dict):
+        for league, clubs in base.items():
+            if isinstance(clubs, dict):
+                teams[league] = dict(clubs)
+
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT name, stars, logo FROM custom_teams WHERE gender = ?", (gender,))
@@ -105,6 +110,11 @@ def get_fc26_teams(gender: str = "Masculin") -> Dict[str, Dict[str, dict]]:
                     "stars": row["stars"],
                     "logo": row["logo"] or ""
                 }
+                
+    # Sécurité ultime : si le dictionnaire est vide, on renvoie au moins une structure minimale pour éviter le crash
+    if not teams:
+        teams = {"Ligues par défaut": {"Équipe par défaut": {"stars": 3.0, "logo": ""}}}
+        
     return teams
 
 def add_custom_team(name: str, stars: float, logo: str, gender: str = "Masculin"):
