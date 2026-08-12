@@ -3,7 +3,7 @@
 import sqlite3
 import json
 from typing import List, Dict, Any
-from config import DEFAULT_ROOMMATES, FC26_TEAMS, DEFAULT_LOGO
+from config import DEFAULT_ROOMMATES, FC26_TEAMS_MEN, FC26_TEAMS_WOMEN, DEFAULT_LOGO
 
 DB_FILE = "app_data.db"
 DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
