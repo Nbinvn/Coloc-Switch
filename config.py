@@ -1,7 +1,7 @@
 # config.py
 
 APP_PASSWORD = "coloc2026"
-DEFAULT_ROOMMATES = ["Coloc 1", "Coloc 2", "Coloc 3"]
+DEFAULT_ROOMMATES = ["Louis", "Nicolas, "Valentin"]
 
 DEFAULT_LOGO = ""  # "" = un écusson est généré automatiquement (image locale, jamais cassée)
 DEFAULT_MK_TRACK_IMG = ""  # idem : généré localement pour chaque circuit
