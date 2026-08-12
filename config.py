@@ -3,8 +3,8 @@
 APP_PASSWORD = "coloc2026"
 DEFAULT_ROOMMATES = ["Coloc 1", "Coloc 2", "Coloc 3"]
 
-DEFAULT_LOGO = "https://cdn-icons-png.flaticon.com/512/564/564419.png" # Ballon générique
-DEFAULT_MK_TRACK_IMG = "https://upload.wikimedia.org/wikipedia/fr/a/a9/Mario_Kart_8_logo.png"
+DEFAULT_LOGO = ""  # "" = un écusson est généré automatiquement (image locale, jamais cassée)
+DEFAULT_MK_TRACK_IMG = ""  # idem : généré localement pour chaque circuit
 
 # ==========================================
 # MARIO KART 8 DELUXE - PERSONNAGES (50)
@@ -182,109 +182,177 @@ MK8_TRACKS = {
     "Wii Route Arc-en-ciel": {"difficulty": 3, "image": DEFAULT_MK_TRACK_IMG},
 }
 
+
+
 # ==========================================
-# FC 26 - ÉQUIPES
+# FC 26 - ÉQUIPES MASCULINES
 # Structure : { "Ligue": { "Équipe": {"stars": x, "logo": url} } }
-# Ce format permet le double menu déroulant "Ligue" -> "Équipe".
-# NOTE : la base de données réelle du jeu FC 26 contient plusieurs
-# centaines de clubs sous licence. Il n'est pas réaliste de tous les
-# lister ici de façon fiable, donc cette liste couvre un très large
-# éventail de championnats + les équipes nationales. Tu peux en ajouter
-# d'autres à tout moment via "Créer une équipe personnalisée" dans l'appli.
+# logo="" => un écusson est généré automatiquement (voir placeholders.py),
+# ce qui garantit qu'aucune image ne sera jamais cassée.
+# NOTE : ceci couvre un très large éventail de championnats mondiaux + des
+# sélections spéciales/all-star. La base officielle de FC26 contient plusieurs
+# centaines de clubs sous licence, impossible de tous les lister de façon fiable ;
+# ajoute-en d'autres à tout moment via "Créer une équipe personnalisée".
 # ==========================================
-FC26_TEAMS = {
+FC26_TEAMS_MEN = {
     "Premier League": {
         "Arsenal": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg"},
         "Aston Villa": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/Aston_Villa_FC_crest_%282016%29.svg"},
-        "Bournemouth": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Brentford": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Brighton": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Bournemouth": {"stars": 3.5, "logo": ""},
+        "Brentford": {"stars": 3.5, "logo": ""},
+        "Brighton": {"stars": 4.0, "logo": ""},
         "Chelsea": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg"},
-        "Crystal Palace": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Everton": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Fulham": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Crystal Palace": {"stars": 3.5, "logo": ""},
+        "Everton": {"stars": 3.5, "logo": ""},
+        "Fulham": {"stars": 3.5, "logo": ""},
+        "Ipswich Town": {"stars": 3.0, "logo": ""},
+        "Leicester City": {"stars": 3.5, "logo": ""},
         "Liverpool": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg"},
         "Manchester City": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"},
         "Manchester United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"},
         "Newcastle United": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg"},
-        "Nottingham Forest": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Nottingham Forest": {"stars": 3.5, "logo": ""},
+        "Southampton": {"stars": 3.0, "logo": ""},
         "Tottenham Hotspur": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"},
-        "West Ham United": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Wolverhampton": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "West Ham United": {"stars": 3.5, "logo": ""},
+        "Wolverhampton": {"stars": 3.5, "logo": ""},
+    },
+    "Championship": {
+        "Leeds United": {"stars": 3.5, "logo": ""},
+        "Sunderland": {"stars": 3.0, "logo": ""},
+        "West Bromwich Albion": {"stars": 3.0, "logo": ""},
+        "Norwich City": {"stars": 3.0, "logo": ""},
+        "Middlesbrough": {"stars": 3.0, "logo": ""},
+        "Sheffield United": {"stars": 3.0, "logo": ""},
     },
     "La Liga": {
-        "Athletic Bilbao": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Athletic Bilbao": {"stars": 4.0, "logo": ""},
         "Atlético Madrid": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg"},
         "FC Barcelone": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"},
+        "Celta Vigo": {"stars": 3.0, "logo": ""},
+        "Getafe": {"stars": 3.0, "logo": ""},
         "Girona FC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/9/90/Girona_FC_logo.svg"},
-        "Real Betis": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Osasuna": {"stars": 3.0, "logo": ""},
+        "Rayo Vallecano": {"stars": 3.0, "logo": ""},
+        "Real Betis": {"stars": 3.5, "logo": ""},
         "Real Madrid": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"},
         "Real Sociedad": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f1/Real_Sociedad_logo.svg"},
-        "Sevilla FC": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Valence CF": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Villarreal CF": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Sevilla FC": {"stars": 3.5, "logo": ""},
+        "Valence CF": {"stars": 3.5, "logo": ""},
+        "Villarreal CF": {"stars": 4.0, "logo": ""},
     },
     "Ligue 1": {
         "AS Monaco": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/b/ba/AS_Monaco_FC.svg"},
-        "FC Nantes": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "FC Nantes": {"stars": 3.0, "logo": ""},
         "Lille OSC": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3f/Lille_OSC_2018_logo.svg"},
+        "Montpellier HSC": {"stars": 3.0, "logo": ""},
         "Olympique de Marseille": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/fr/4/43/Logo_Olympique_de_Marseille.svg"},
         "Olympique Lyonnais": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/c6/Olympique_Lyonnais.svg"},
         "Paris Saint-Germain": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"},
         "RC Lens": {"stars": 4.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cc/RC_Lens_logo.svg"},
-        "RC Strasbourg": {"stars": 3.0, "logo": DEFAULT_LOGO},
-        "Stade Rennais": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Toulouse FC": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "RC Strasbourg": {"stars": 3.0, "logo": ""},
+        "Stade Brestois": {"stars": 3.0, "logo": ""},
+        "Stade Rennais": {"stars": 3.5, "logo": ""},
+        "Stade de Reims": {"stars": 3.0, "logo": ""},
+        "Toulouse FC": {"stars": 3.0, "logo": ""},
     },
     "Serie A": {
         "AC Milan": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/d/d0/Logo_of_AC_Milan.svg"},
         "AS Roma": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f7/AS_Roma_logo_%282017%29.svg"},
-        "Atalanta": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "Bologne": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Fiorentina": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Atalanta": {"stars": 4.0, "logo": ""},
+        "Bologne": {"stars": 3.5, "logo": ""},
+        "Fiorentina": {"stars": 3.5, "logo": ""},
+        "Genoa": {"stars": 3.0, "logo": ""},
         "Inter Milan": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg"},
         "Juventus": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Juventus_FC_2017_icon_%28black%29.svg"},
-        "Lazio": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Lazio": {"stars": 4.0, "logo": ""},
         "Napoli": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/2/28/S.S.C._Napoli_logo.svg"},
-        "Torino": {"stars": 3.0, "logo": DEFAULT_LOGO},
+        "Torino": {"stars": 3.0, "logo": ""},
+        "Udinese": {"stars": 3.0, "logo": ""},
     },
     "Bundesliga": {
         "Bayer Leverkusen": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg"},
         "Bayern Munich": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg"},
         "Borussia Dortmund": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg"},
-        "Eintracht Francfort": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Borussia Mönchengladbach": {"stars": 3.5, "logo": ""},
+        "Eintracht Francfort": {"stars": 3.5, "logo": ""},
+        "FC Union Berlin": {"stars": 3.0, "logo": ""},
         "RB Leipzig": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/0/04/RB_Leipzig_2014_logo.svg"},
-        "SC Fribourg": {"stars": 3.0, "logo": DEFAULT_LOGO},
-        "VfB Stuttgart": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "VfL Wolfsburg": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "SC Fribourg": {"stars": 3.0, "logo": ""},
+        "VfB Stuttgart": {"stars": 4.0, "logo": ""},
+        "VfL Wolfsburg": {"stars": 3.5, "logo": ""},
+        "Werder Brême": {"stars": 3.0, "logo": ""},
     },
     "Liga Portugal": {
-        "Benfica": {"stars": 4.5, "logo": DEFAULT_LOGO},
-        "FC Porto": {"stars": 4.5, "logo": DEFAULT_LOGO},
-        "Sporting CP": {"stars": 4.5, "logo": DEFAULT_LOGO},
-        "SC Braga": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Benfica": {"stars": 4.5, "logo": ""},
+        "FC Porto": {"stars": 4.5, "logo": ""},
+        "SC Braga": {"stars": 3.5, "logo": ""},
+        "Sporting CP": {"stars": 4.5, "logo": ""},
+        "Vitória SC": {"stars": 3.0, "logo": ""},
     },
     "Eredivisie": {
-        "Ajax": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "Feyenoord": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "PSV Eindhoven": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "AZ Alkmaar": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "AZ Alkmaar": {"stars": 3.5, "logo": ""},
+        "Ajax": {"stars": 4.0, "logo": ""},
+        "FC Twente": {"stars": 3.0, "logo": ""},
+        "Feyenoord": {"stars": 4.0, "logo": ""},
+        "PSV Eindhoven": {"stars": 4.0, "logo": ""},
     },
     "Süper Lig": {
-        "Galatasaray": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "Fenerbahçe": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "Besiktas": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Besiktas": {"stars": 3.5, "logo": ""},
+        "Fenerbahçe": {"stars": 4.0, "logo": ""},
+        "Galatasaray": {"stars": 4.0, "logo": ""},
+        "Trabzonspor": {"stars": 3.0, "logo": ""},
+    },
+    "Jupiler Pro League": {
+        "Club Bruges": {"stars": 4.0, "logo": ""},
+        "Anderlecht": {"stars": 3.5, "logo": ""},
+        "Union Saint-Gilloise": {"stars": 3.5, "logo": ""},
+    },
+    "Scottish Premiership": {
+        "Celtic": {"stars": 3.5, "logo": ""},
+        "Rangers": {"stars": 3.5, "logo": ""},
+        "Aberdeen": {"stars": 3.0, "logo": ""},
+    },
+    "Liga MX": {
+        "Club América": {"stars": 3.5, "logo": ""},
+        "Chivas Guadalajara": {"stars": 3.5, "logo": ""},
+        "Cruz Azul": {"stars": 3.5, "logo": ""},
+        "Monterrey": {"stars": 3.5, "logo": ""},
+        "Tigres UANL": {"stars": 3.5, "logo": ""},
     },
     "Brasileirão": {
-        "Flamengo": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "Palmeiras": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "São Paulo FC": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "Corinthians": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Corinthians": {"stars": 3.5, "logo": ""},
+        "Flamengo": {"stars": 4.0, "logo": ""},
+        "Fluminense": {"stars": 3.5, "logo": ""},
+        "Grêmio": {"stars": 3.5, "logo": ""},
+        "Palmeiras": {"stars": 4.0, "logo": ""},
+        "São Paulo FC": {"stars": 3.5, "logo": ""},
+    },
+    "Argentine Primera División": {
+        "Boca Juniors": {"stars": 4.0, "logo": ""},
+        "River Plate": {"stars": 4.0, "logo": ""},
+        "Racing Club": {"stars": 3.5, "logo": ""},
+    },
+    "Saudi Pro League": {
+        "Al-Hilal": {"stars": 4.0, "logo": ""},
+        "Al-Nassr": {"stars": 4.0, "logo": ""},
+        "Al-Ittihad": {"stars": 3.5, "logo": ""},
+        "Al-Ahli": {"stars": 3.5, "logo": ""},
     },
     "MLS": {
-        "Inter Miami": {"stars": 4.0, "logo": DEFAULT_LOGO},
-        "LA Galaxy": {"stars": 3.5, "logo": DEFAULT_LOGO},
-        "LAFC": {"stars": 3.5, "logo": DEFAULT_LOGO},
+        "Inter Miami": {"stars": 4.0, "logo": ""},
+        "LA Galaxy": {"stars": 3.5, "logo": ""},
+        "LAFC": {"stars": 3.5, "logo": ""},
+        "Seattle Sounders": {"stars": 3.0, "logo": ""},
+    },
+    "J1 League": {
+        "Kawasaki Frontale": {"stars": 3.0, "logo": ""},
+        "Urawa Red Diamonds": {"stars": 3.0, "logo": ""},
+        "Yokohama F. Marinos": {"stars": 3.0, "logo": ""},
+    },
+    "A-League": {
+        "Melbourne City": {"stars": 2.5, "logo": ""},
+        "Sydney FC": {"stars": 2.5, "logo": ""},
     },
     "Équipes Nationales": {
         "Allemagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/e/e3/DFB_Logo_1995.svg"},
@@ -292,12 +360,84 @@ FC26_TEAMS = {
         "Argentine": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/4/47/Argentine_Football_Association_logo.svg"},
         "Belgique": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/4/43/Royal_Belgian_FA_logo_2019.svg"},
         "Brésil": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/c/cb/Confedera%C3%A7%C3%A3o_Brasileira_de_Futebol_%28CBF%29_logo.svg"},
-        "Croatie": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Croatie": {"stars": 4.0, "logo": ""},
+        "Danemark": {"stars": 3.5, "logo": ""},
         "Espagne": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/31/Spain_National_Football_Team_badge.svg"},
         "France": {"stars": 5.0, "logo": "https://upload.wikimedia.org/wikipedia/en/f/f9/French_Football_Federation_logo.svg"},
         "Italie": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/30/Italian_Football_Federation_logo.svg"},
-        "Maroc": {"stars": 4.0, "logo": DEFAULT_LOGO},
+        "Japon": {"stars": 3.5, "logo": ""},
+        "Maroc": {"stars": 4.0, "logo": ""},
+        "Mexique": {"stars": 3.5, "logo": ""},
         "Pays-Bas": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/78/Netherlands_national_football_team_logo.svg"},
+        "Pologne": {"stars": 3.5, "logo": ""},
         "Portugal": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/3/3d/Portuguese_Football_Federation.svg"},
+        "Sénégal": {"stars": 3.5, "logo": ""},
+        "Suisse": {"stars": 3.5, "logo": ""},
+        "Uruguay": {"stars": 4.0, "logo": ""},
+        "États-Unis": {"stars": 3.5, "logo": ""},
+    },
+    "Sélections Spéciales / All-Stars": {
+        "Icônes FC26": {"stars": 5.0, "logo": ""},
+        "Équipe de Légendes": {"stars": 5.0, "logo": ""},
+        "All-Stars Premier League": {"stars": 5.0, "logo": ""},
+        "All-Stars Liga": {"stars": 5.0, "logo": ""},
+        "Team of the Season": {"stars": 5.0, "logo": ""},
+        "Ballon d'Or All-Stars": {"stars": 5.0, "logo": ""},
+    },
+}
+
+# ==========================================
+# FC 26 - ÉQUIPES FÉMININES
+# ==========================================
+FC26_TEAMS_WOMEN = {
+    "Women's Super League (Angleterre)": {
+        "Arsenal Féminin": {"stars": 4.5, "logo": ""},
+        "Chelsea Féminin": {"stars": 4.5, "logo": ""},
+        "Manchester City Féminin": {"stars": 4.5, "logo": ""},
+        "Manchester United Féminin": {"stars": 4.0, "logo": ""},
+        "Liverpool Féminin": {"stars": 3.5, "logo": ""},
+        "Tottenham Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "Première Ligue Féminine (France)": {
+        "Olympique Lyonnais Féminin": {"stars": 4.5, "logo": ""},
+        "Paris Saint-Germain Féminin": {"stars": 4.5, "logo": ""},
+        "Olympique de Marseille Féminin": {"stars": 3.5, "logo": ""},
+        "Paris FC Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "Liga F (Espagne)": {
+        "FC Barcelone Féminin": {"stars": 5.0, "logo": ""},
+        "Real Madrid Féminin": {"stars": 4.0, "logo": ""},
+        "Atlético Madrid Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "Frauen-Bundesliga (Allemagne)": {
+        "Bayern Munich Féminin": {"stars": 4.5, "logo": ""},
+        "VfL Wolfsburg Féminin": {"stars": 4.5, "logo": ""},
+        "Eintracht Francfort Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "Serie A Femminile (Italie)": {
+        "Juventus Féminin": {"stars": 4.0, "logo": ""},
+        "AS Roma Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "NWSL (États-Unis)": {
+        "Kansas City Current": {"stars": 3.5, "logo": ""},
+        "NJ/NY Gotham FC": {"stars": 3.5, "logo": ""},
+        "Orlando Pride": {"stars": 3.5, "logo": ""},
+    },
+    "Équipes Nationales Féminines": {
+        "États-Unis Féminin": {"stars": 5.0, "logo": ""},
+        "Angleterre Féminin": {"stars": 5.0, "logo": ""},
+        "Espagne Féminin": {"stars": 5.0, "logo": ""},
+        "France Féminin": {"stars": 4.5, "logo": ""},
+        "Allemagne Féminin": {"stars": 4.5, "logo": ""},
+        "Suède Féminin": {"stars": 4.0, "logo": ""},
+        "Pays-Bas Féminin": {"stars": 4.0, "logo": ""},
+        "Brésil Féminin": {"stars": 4.0, "logo": ""},
+        "Japon Féminin": {"stars": 4.0, "logo": ""},
+        "Canada Féminin": {"stars": 3.5, "logo": ""},
+    },
+    "Sélections Spéciales / All-Stars Féminines": {
+        "Icônes Féminines FC26": {"stars": 5.0, "logo": ""},
+        "Équipe de Légendes Féminines": {"stars": 5.0, "logo": ""},
+        "Team of the Season Féminin": {"stars": 5.0, "logo": ""},
     },
 }
