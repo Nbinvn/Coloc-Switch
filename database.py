@@ -3,7 +3,7 @@
 import sqlite3
 import json
 from typing import List, Dict, Any
-from config import DEFAULT_ROOMMATES, FC26_DEFAULT_TEAMS
+from config import DEFAULT_ROOMMATES, FC26_TEAMS, DEFAULT_LOGO
 
 DB_FILE = "app_data.db"
 DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
@@ -29,7 +29,8 @@ def init_db():
             CREATE TABLE IF NOT EXISTS custom_teams (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT UNIQUE NOT NULL,
-                stars REAL NOT NULL
+                stars REAL NOT NULL,
+                logo TEXT DEFAULT ''
             )
         """)
         cursor.execute("""
@@ -42,11 +43,11 @@ def init_db():
                 elo_changes_json TEXT NOT NULL
             )
         """)
-        # Mise à jour silencieuse si la DB existait déjà sans la colonne avatar
-        try:
-            cursor.execute("ALTER TABLE players ADD COLUMN avatar TEXT DEFAULT ''")
-        except sqlite3.OperationalError:
-            pass 
+        # Mises à jour silencieuses pour DB existantes
+        try: cursor.execute("ALTER TABLE players ADD COLUMN avatar TEXT DEFAULT ''")
+        except: pass 
+        try: cursor.execute("ALTER TABLE custom_teams ADD COLUMN logo TEXT DEFAULT ''")
+        except: pass
 
         for roomie in DEFAULT_ROOMMATES:
             cursor.execute("INSERT OR IGNORE INTO players (name, is_guest, elo, avatar) VALUES (?, 0, 1000.0, ?)", (roomie, DEFAULT_AVATAR))
@@ -68,8 +69,6 @@ def update_player_profile(old_name: str, new_name: str, avatar_b64: str):
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("UPDATE players SET name = ?, avatar = ? WHERE name = ?", (new_name.strip(), avatar_b64, old_name))
-        
-        # Astuce : Mettre à jour l'historique JSON pour éviter que l'ancien nom n'apparaisse dans les stats
         cursor.execute("SELECT id, details_json, elo_changes_json FROM matches")
         for row in cursor.fetchall():
             new_details = row["details_json"].replace(f'"{old_name}"', f'"{new_name}"')
@@ -83,19 +82,23 @@ def update_player_elo(name: str, delta: float):
         cursor.execute("UPDATE players SET elo = elo + ? WHERE name = ?", (delta, name))
         conn.commit()
 
-def get_fc26_teams() -> Dict[str, float]:
-    teams = FC26_DEFAULT_TEAMS.copy()
+def get_fc26_teams() -> Dict[str, dict]:
+    teams = FC26_TEAMS.copy()
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT name, stars FROM custom_teams")
+        cursor.execute("SELECT name, stars, logo FROM custom_teams")
         for row in cursor.fetchall():
-            teams[row["name"]] = row["stars"]
+            teams[row["name"]] = {
+                "stars": row["stars"], 
+                "logo": row["logo"] if row["logo"] else DEFAULT_LOGO
+            }
     return teams
 
-def add_custom_team(name: str, stars: float):
+def add_custom_team(name: str, stars: float, logo: str):
+    final_logo = logo if logo.strip() != "" else DEFAULT_LOGO
     with get_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("INSERT OR REPLACE INTO custom_teams (name, stars) VALUES (?, ?)", (name.strip(), stars))
+        cursor.execute("INSERT OR REPLACE INTO custom_teams (name, stars, logo) VALUES (?, ?, ?)", (name.strip(), stars, final_logo))
         conn.commit()
 
 def save_match(game: str, is_official: bool, details: dict, elo_changes: dict):
