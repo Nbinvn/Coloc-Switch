@@ -5,7 +5,8 @@ import pandas as pd
 import base64
 import database as db
 import elo_engine as elo
-from config import APP_PASSWORD, MK8_TRACKS, MK8_CHARACTERS, FC26_TEAMS, DEFAULT_LOGO
+from config import APP_PASSWORD, MK8_TRACKS, MK8_CHARACTERS
+from placeholders import avatar_circle, logo_shield, track_banner, DEFAULT_PLAYER_AVATAR
 
 st.set_page_config(page_title="Coloc Game Tracker", page_icon="🎮", layout="wide")
 db.init_db()
@@ -32,15 +33,17 @@ st.sidebar.title("🎮 Menu")
 menu = st.sidebar.radio("Navigation", ["📊 Classement", "🏎️ Mario Kart 8", "⚽ FC 26", "⚙️ Gestion Profils", "📜 Historique"])
 
 # --- FONCTIONS VISUELLES ---
-# Icône de secours (toujours disponible) affichée si l'image d'origine ne charge pas
-FALLBACK_ICON = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-_ONERROR = f"this.onerror=null;this.src='{FALLBACK_ICON}';"
+# Toutes les images sont générées localement (data URI) : elles ne dépendent
+# d'aucun serveur externe et ne peuvent donc jamais s'afficher "cassées",
+# contrairement aux liens hotlinkés (wikis, flaticon...) qui peuvent bloquer
+# le hotlinking à tout moment sans prévenir.
 
 def display_mk8_track(track_name):
     t = MK8_TRACKS[track_name]
+    img = track_banner(track_name, t["difficulty"])
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:15px; background-color:#1e1e2e; padding:10px; border-radius:10px; margin-bottom:10px;">
-            <img src="{t['image']}" width="80" style="border-radius:5px;" onerror="{_ONERROR}">
+            <img src="{img}" width="80" style="border-radius:5px;">
             <div>
                 <strong style="font-size:1.1em;">{track_name}</strong><br>
                 <span>Difficulté : {'🌶️' * t['difficulty']}</span>
@@ -49,21 +52,25 @@ def display_mk8_track(track_name):
     """, unsafe_allow_html=True)
 
 def display_mk8_character(char_name, player_name):
-    c = MK8_CHARACTERS[char_name]
+    img = avatar_circle(char_name)
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:10px; padding:5px;">
-            <img src="{c['image']}" width="40" style="border-radius:50px;" onerror="{_ONERROR}">
+            <img src="{img}" width="40" style="border-radius:50px;">
             <span><b>{player_name}</b> joue <i>{char_name}</i></span>
         </div>
     """, unsafe_allow_html=True)
 
 def display_fc_team(league_name, team_name, all_teams_dict):
-    data = all_teams_dict.get(league_name, {}).get(team_name, {"stars": 1.0, "logo": DEFAULT_LOGO})
+    data = all_teams_dict.get(league_name, {}).get(team_name, {"stars": 1.0, "logo": ""})
     stars = data["stars"]
     star_str = '⭐' * int(stars) + ('✨' if stars % 1 != 0 else '')
+    real_logo = data.get("logo") or ""
+    fallback = logo_shield(team_name)
+    src = real_logo if real_logo else fallback
+    onerror = f"this.onerror=null;this.src='{fallback}';" if real_logo else ""
     st.markdown(f"""
         <div style="display:flex; align-items:center; gap:15px; background-color:#173620; padding:10px; border-radius:10px; margin-bottom:15px; border: 1px solid #2d663b;">
-            <img src="{data['logo']}" width="50" onerror="{_ONERROR}">
+            <img src="{src}" width="50" onerror="{onerror}">
             <div>
                 <strong style="font-size:1.2em;">{team_name}</strong><br>
                 <span>Niveau : {star_str} ({stars})</span>
@@ -79,15 +86,14 @@ if menu == "📊 Classement":
     
     df = pd.DataFrame(players_data)
     if not df.empty:
-        # CORRECTION 1 : Vérification propre de l'existence de la colonne
         if "avatar" not in df.columns:
-            df["avatar"] = "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+            df["avatar"] = DEFAULT_PLAYER_AVATAR
         else:
-            df["avatar"] = df["avatar"].fillna("https://cdn-icons-png.flaticon.com/512/149/149071.png")
+            df["avatar"] = df["avatar"].fillna(DEFAULT_PLAYER_AVATAR)
+            df.loc[df["avatar"] == "", "avatar"] = DEFAULT_PLAYER_AVATAR
         
-        # Filtre et préparation des tableaux
-        coloc_df = df[df["is_guest"] == 0][["avatar", "name", "elo"]].reset_index(drop=True)
-        guest_df = df[df["is_guest"] == 1][["avatar", "name", "elo"]].reset_index(drop=True)
+        coloc_df = df[df["is_guest"] == 0][["avatar", "name", "elo"]].sort_values("elo", ascending=False).reset_index(drop=True)
+        guest_df = df[df["is_guest"] == 1][["avatar", "name", "elo"]].sort_values("elo", ascending=False).reset_index(drop=True)
         
         st.subheader("🏆 Classement Officiel (Colocataires)")
         st.dataframe(
@@ -97,7 +103,7 @@ if menu == "📊 Classement":
                 "name": "Joueur", 
                 "elo": "Score ELO"
             },
-            width="stretch"  # <-- CORRECTION 2 : Remplace 'use_container_width=True'
+            width="stretch"
         )
         
         st.subheader("🌟 Classement Invités")
@@ -108,7 +114,7 @@ if menu == "📊 Classement":
                 "name": "Invité", 
                 "elo": "Score ELO"
             },
-            width="stretch"  # <-- CORRECTION 2 : Remplace 'use_container_width=True'
+            width="stretch"
         )
 
 # -----------------------------------------------------------------------------
@@ -187,12 +193,19 @@ elif menu == "⚽ FC 26":
         with st.expander("⚙️ Créer une équipe personnalisée"):
             c_name = st.text_input("Nom de l'équipe :")
             c_stars = st.slider("Niveau :", 1.0, 5.0, 4.0, 0.5)
-            c_logo = st.text_input("URL du logo (optionnel) :")
+            c_gender = st.selectbox("Genre :", sorted(["Masculin", "Féminin"]), key="c_gender")
+            c_logo = st.text_input("URL du logo (optionnel, sinon un écusson est généré automatiquement) :")
             if st.button("Sauvegarder l'équipe"):
-                db.add_custom_team(c_name, c_stars, c_logo)
-                st.rerun()
+                if c_name.strip():
+                    db.add_custom_team(c_name, c_stars, c_logo, c_gender)
+                    st.success("Équipe personnalisée créée !")
+                    st.rerun()
+                else:
+                    st.error("Merci de donner un nom à l'équipe.")
 
-    all_teams = db.get_fc26_teams()
+    # Genre de la confrontation : détermine quelles ligues sont proposées
+    match_gender = st.selectbox("👤 Confrontation :", sorted(["Masculin", "Féminin"]), key="match_gender")
+    all_teams = db.get_fc26_teams(match_gender)
     leagues_sorted = sorted(all_teams.keys())
     format_match = st.selectbox("Format :", sorted(["1v1", "2v1", "2v2"]))
     
@@ -220,7 +233,12 @@ elif menu == "⚽ FC 26":
             t1_data, t2_data = all_teams[t1_league][t1_team], all_teams[t2_league][t2_team]
             elo_changes, is_off = elo.calculate_fc26_elo(t1_p, t2_p, t1_data["stars"], t2_data["stars"], score1, score2, players_dict)
             for p, delta in elo_changes.items(): db.update_player_elo(p, delta)
-            db.save_match("FC26", is_off, {"team1_players": t1_p, "team2_players": t2_p, "team1": f"{t1_league} - {t1_team}", "team2": f"{t2_league} - {t2_team}", "score1": score1, "score2": score2}, elo_changes)
+            db.save_match("FC26", is_off, {
+                "gender": match_gender,
+                "team1_players": t1_p, "team2_players": t2_p,
+                "team1": f"{t1_league} - {t1_team}", "team2": f"{t2_league} - {t2_team}",
+                "score1": score1, "score2": score2
+            }, elo_changes)
             st.success("Match enregistré !")
             st.rerun()
 
@@ -234,7 +252,7 @@ elif menu == "⚙️ Gestion Profils":
     
     col1, col2 = st.columns([1, 2])
     with col1:
-        st.image(player_info.get("avatar") or "https://cdn-icons-png.flaticon.com/512/149/149071.png", width=150)
+        st.image(player_info.get("avatar") or DEFAULT_PLAYER_AVATAR, width=150)
     with col2:
         new_name = st.text_input("Modifier le nom :", value=player_info["name"])
         avatar_file = st.file_uploader("Nouvelle photo (PNG/JPG) :", type=["png", "jpg", "jpeg"])
