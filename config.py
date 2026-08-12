@@ -441,3 +441,4 @@ FC26_TEAMS_WOMEN = {
         "Team of the Season Féminin": {"stars": 5.0, "logo": ""},
     },
 }
+
