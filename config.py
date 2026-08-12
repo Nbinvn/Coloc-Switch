@@ -232,3 +232,12 @@ FC26_TEAMS = {
     "Belgique": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/4/43/Royal_Belgian_FA_logo_2019.svg"},
     "Pays-Bas": {"stars": 4.5, "logo": "https://upload.wikimedia.org/wikipedia/en/7/78/Netherlands_national_football_team_logo.svg"},
 }
+
+# Ajoutez ce bloc dans votre fichier config.py
+FC26_DEFAULT_TEAMS = [
+    "Real Madrid", "Manchester City", "Bayern Munich", 
+    "PSG", "Arsenal", "FC Barcelone", "Liverpool"
+]
+
+# On crée cet alias pour que app.py trouve la variable qu'il cherche
+FC26_TEAMS = FC26_DEFAULT_TEAMS
